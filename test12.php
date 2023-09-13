@@ -177,7 +177,7 @@ function getPerfectPartner($surname, $name, $patronomyc, $persons) {
         
         $partnerGender = getGenderFromName($randomPerson['fullname']);
         
-        if ($gender !== $partnerGender && ($gender === 1 || $partnerGender === 1)) {
+        if ($gender !== 0 && $partnerGender !== 0 && $gender !== $partnerGender) {
             $compatibilityPercentage = rand(5000, 10000) / 100;
             
             $shortName = mb_convert_case(getShortName($fullname), MB_CASE_TITLE);
