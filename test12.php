@@ -95,16 +95,13 @@ function getGenderFromName($fullname) {
     $patronomyc = mb_strtolower($parts['patronomyc']);
 
     $malePatterns = [
-        'ич', 
-        'й',  
-        'н',  
-        'в',  
+        'вич', 
+        
     ];
 
     $femalePatterns = [
         'вна',  
-        'а',    
-        'ва',   
+          
     ];
 
     foreach ($malePatterns as $pattern) {
@@ -166,7 +163,12 @@ function getGenderDescription($persons) {
 }
 
 function getPerfectPartner($surname, $name, $patronomyc, $persons) {
+    $surname = mb_strtolower($surname);
+    $name = mb_strtolower($name);
+    $patronomyc = mb_strtolower($patronomyc);
+    
     $fullname = getFullnameFromParts($surname, $name, $patronomyc);
+
     $gender = getGenderFromName($fullname);
     
     while (true) {
@@ -175,14 +177,18 @@ function getPerfectPartner($surname, $name, $patronomyc, $persons) {
         
         $partnerGender = getGenderFromName($randomPerson['fullname']);
         
-        if ($gender !== $partnerGender) {
+        if ($gender !== $partnerGender && ($gender === 1 || $partnerGender === 1)) {
             $compatibilityPercentage = rand(5000, 10000) / 100;
+            
+            $shortName = mb_convert_case(getShortName($fullname), MB_CASE_TITLE);
+            $partnerShortName = mb_convert_case(getShortName($randomPerson['fullname']), MB_CASE_TITLE);
+
+            echo "$shortName + $partnerShortName = \n";
+            echo "♡ Идеально на $compatibilityPercentage% ♡\n";
+            
             break;
         }
     }
-    
-    echo "$fullname + " . getShortName($randomPerson['fullname']) . " = \n";
-    echo "♡ Идеально на $compatibilityPercentage% ♡\n";
 }
 
 getGenderDescription($example_persons_array);
